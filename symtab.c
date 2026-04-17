@@ -30,6 +30,7 @@ static int    addr[TABSIZE];
 
 static int numrows=0;                  /* number of rows in the ST    */
 static int startp =0;                  /* start position program in ST*/
+static int next_free_addr = 0;         /* index of next free addr     */
 
 /**********************************************************************/
 /*  PRIVATE METHODS for this OBJECT  (using "static" in C)            */
@@ -59,7 +60,12 @@ static void set_addr(int ftref, int    faddr)  { addr[ftref] = faddr; }
 static void addrow(char *fname, toktyp frole, toktyp ftype,
                    int fsize, int faddr)
 {
-    printf("\n *** TO BE DONE");
+    set_name(numrows, fname);
+    set_role(numrows, frole);
+    set_type(numrows, ftype);
+    set_size(numrows, fsize);
+    set_addr(numrows, faddr);
+    numrows++;
 }
 /**********************************************************************/
 /*  Initialise the symbol table                                       */
@@ -78,7 +84,14 @@ static void initst()
 /**********************************************************************/
 static int get_ref(char * fpname)
 {
-    printf("\n *** TO BE DONE"); return 0;
+    for(int i = 0;i<numrows;i++)
+    {
+        if(strcmp(name[i], fpname) == 0)
+        {
+            return i;
+        }
+    }
+    return nfound;
 }
 
 /**********************************************************************/
@@ -89,12 +102,25 @@ static int get_ref(char * fpname)
 /**********************************************************************/
 static void p_symrow(int ftref)
 {
-    printf("\n *** TO BE DONE");
+    printf("%11s %10s %10s %9d %9d \n", name[ftref], tok2lex(role[ftref]), tok2lex(type[ftref]), size[ftref], addr[ftref]);
 }
 
 void p_symtab()
 {
-    printf("\n *** TO BE DONE");
+    printf("________________________________________________________ \n");
+    printf(" THE SYMBOL TABLE\n");
+    printf("________________________________________________________ \n");
+    printf("       NAME       ROLE       TYPE      SIZE      ADDR     \n");
+    printf("________________________________________________________ \n");
+    
+    for(int i = startp; i < numrows; i++)
+    {
+        p_symrow(i);
+    }
+    
+    printf("________________________________________________________ \n");
+    printf(" STATIC STORAGE REQUIRED is %d BYTES\n", next_free_addr);
+    printf("________________________________________________________ \n\n");
 }
 
 /**********************************************************************/
@@ -102,7 +128,10 @@ void p_symtab()
 /**********************************************************************/
 void addp_name(char * fpname)
 {
-    printf("\n *** TO BE DONE");
+    initst();
+    startp = numrows;
+    addrow(fpname, program, program, 0, 0);
+    
 }
 
 /**********************************************************************/
@@ -110,7 +139,7 @@ void addp_name(char * fpname)
 /**********************************************************************/
 void addv_name(char * fpname)
 {
-    printf("\n *** TO BE DONE");
+    addrow(fpname,var, undef, 0, 0);
 }
 
 /**********************************************************************/
@@ -119,7 +148,12 @@ void addv_name(char * fpname)
 /**********************************************************************/
 int find_name(char * fpname)
 {
-    printf("\n *** TO BE DONE"); return 0;
+    for(int i = 0;i< numrows;i++)
+    {
+        if(strcmp(fpname, get_name(i)) == 0)
+            return 1;
+    }
+    return 0;
 }
 
 /**********************************************************************/
@@ -127,7 +161,21 @@ int find_name(char * fpname)
 /**********************************************************************/
 void setv_type(toktyp ftype)
 {
-    printf("\n *** TO BE DONE");
+    int template_index = get_ref(tok2lex(ftype));
+    int type_size = get_size(template_index);
+
+    for(int i = startp;i<numrows;i++)
+    {
+        if(get_type(i) == undef){
+            set_size(i, type_size);
+            set_type(i, ftype);
+            set_addr(i, next_free_addr);
+
+            next_free_addr += type_size;
+        }
+    }
+    set_size(startp, next_free_addr);
+
 }
 
 /**********************************************************************/
@@ -135,7 +183,11 @@ void setv_type(toktyp ftype)
 /**********************************************************************/
 toktyp get_ntype(char * fpname)
 {
-    printf("\n *** TO BE DONE"); return 0;
+    for(int i = 0;i< numrows;i++){
+        if(strcmp(fpname, get_name(i)) == 0)
+            return get_type(i);
+    }
+        return undef;
 }
 
 /**********************************************************************/
