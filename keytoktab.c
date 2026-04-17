@@ -139,6 +139,18 @@ toktyp lex2tok(char * fplex)
 /**********************************************************************/
 toktyp key2tok(char * fplex)
 {
+    int i=0;
+    while(keywordtab[i].token !=nfound){
+
+        if(strcmp(keywordtab[i].text, fplex) == 0)
+            return keywordtab[i].token;
+
+        i++;
+
+    }
+
+    return nfound;
+
     printf("\n *** TO BE DONE");  return 0;
 }
 
@@ -147,6 +159,24 @@ toktyp key2tok(char * fplex)
 /**********************************************************************/
 char * tok2lex(toktyp ftok)
 {
+
+    int i=0;
+    while (tokentab[i].token != nfound) {
+        if (tokentab[i].token == ftok) {
+            return tokentab[i].text;
+        }
+        i++;
+    }
+
+    i=0;
+    while (keywordtab[i].token != nfound) {
+        if (keywordtab[i].token == ftok) {
+            return keywordtab[i].text;
+        }
+        i++;
+    }
+
+    return "TERROR";
     printf("\n *** TO BE DONE");  return 0;
 }
 
