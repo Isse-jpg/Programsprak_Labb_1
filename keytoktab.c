@@ -69,7 +69,7 @@ static tab keywordtab[ ] = {
 
 static void print_token(tab token)
 {
-    printf("  %s   %d\n",token.text,token.token);
+    printf("%10s   %d\n",token.text,token.token);
 }
 
 /**********************************************************************/
@@ -80,24 +80,25 @@ static void print_token(tab token)
 /**********************************************************************/
 void p_toktab()
 {
-    printf("***   Token table   ***\n");
-    tab* curr_tok = &tokentab[0];
-    while(curr_tok->token != nfound)
-    {
-        print_token(*curr_tok);
-        curr_tok++;
-    } 
-
-    printf("\n\n");
-
-    curr_tok = &keywordtab[0];
+    tab* curr_tok = &keywordtab[0];
     printf("***   Keyword Table   ***\n");
     while(curr_tok->token != nfound)
     {
         print_token(*curr_tok);
         curr_tok++;
     } 
+    printf("\n\n");
+
+    printf("***   Token table   ***\n");
+    curr_tok = &tokentab[0];
+    while(curr_tok->token != nfound)
+    {
+        print_token(*curr_tok);
+        curr_tok++;
+    } 
+
     printf("\n");
+
 
 }
 
@@ -110,7 +111,7 @@ toktyp lex2tok(char * fplex)
     while(true)
     {
         tab curr_tok =tokentab[i];
-        if(strcmp(curr_tok.text, fplex))
+        if(strcmp(curr_tok.text, fplex) == 0)
             return curr_tok.token;
 
         else if(curr_tok.token == nfound)
@@ -123,14 +124,14 @@ toktyp lex2tok(char * fplex)
     while(true)
     {
         tab curr_key =keywordtab[i];
-        if(strcmp(curr_key.text, fplex))
+        if(strcmp(curr_key.text, fplex) == 0)
             return curr_key.token;
 
         else if(curr_key.token == nfound)
                 break;
         i++;
     }
-    return nfound;
+    return id;
 
 }
 
@@ -149,7 +150,7 @@ toktyp key2tok(char * fplex)
 
     }
 
-    return nfound;
+    return id;
 
     printf("\n *** TO BE DONE");  return 0;
 }
