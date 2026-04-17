@@ -131,6 +131,8 @@ toktyp lex2tok(char * fplex)
                 break;
         i++;
     }
+    if(isdigit(fplex[0]))
+        return number;
     return id;
 
 }
