@@ -152,7 +152,6 @@ toktyp key2tok(char * fplex)
 
     return id;
 
-    printf("\n *** TO BE DONE");  return 0;
 }
 
 /**********************************************************************/
@@ -178,7 +177,6 @@ char * tok2lex(toktyp ftok)
     }
 
     return "TERROR";
-    printf("\n *** TO BE DONE");  return 0;
 }
 
 
