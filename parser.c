@@ -89,6 +89,7 @@ static void assign_stat();
 static void expr();
 static void term();
 static void factor();
+
 static void prog()
 {
     program_header(); var_part(); stat_part();
@@ -119,13 +120,16 @@ static void var_dec_list()
         var_dec_list();
     
     out("var_dec_list");
+
 }
+
 static void var_dec()
 {
     in("var_dec");
     id_list(); match(':'); type(); match(';');
     out("var_dec");
 }
+
 static void id_list()
 {
     in("id_list");
@@ -138,6 +142,7 @@ static void id_list()
     out("id_list");
 
 }
+
 static void type()
 {
     in("type");
@@ -156,6 +161,7 @@ static void type()
     out("type");
 
 }
+
 static void stat_part(){
     in("stat_part");
     match(begin);
@@ -164,7 +170,6 @@ static void stat_part(){
     out("stat_part");
 
 }
-
 
 static void stat_list(){
     in("stat_list");

@@ -5,6 +5,7 @@
 /**********************************************************************/
 /* Include files                                                      */
 /**********************************************************************/
+#include <stdbool.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -66,6 +67,11 @@ static tab keywordtab[ ] = {
 	{"KERROR", 	     nfound}
 };
 
+static void print_token(tab token)
+{
+    printf("  %s   %d\n",token.text,token.token);
+}
+
 /**********************************************************************/
 /*  PUBLIC METHODS for this OBJECT  (EXPORTED)                        */
 /**********************************************************************/
@@ -74,7 +80,25 @@ static tab keywordtab[ ] = {
 /**********************************************************************/
 void p_toktab()
 {
-    printf("\n *** TO BE DONE");
+    printf("***   Token table   ***\n");
+    tab* curr_tok = &tokentab[0];
+    while(curr_tok->token != nfound)
+    {
+        print_token(*curr_tok);
+        curr_tok++;
+    } 
+
+    printf("\n\n");
+
+    curr_tok = &keywordtab[0];
+    printf("***   Keyword Table   ***\n");
+    while(curr_tok->token != nfound)
+    {
+        print_token(*curr_tok);
+        curr_tok++;
+    } 
+    printf("\n");
+
 }
 
 /**********************************************************************/
@@ -82,7 +106,32 @@ void p_toktab()
 /**********************************************************************/
 toktyp lex2tok(char * fplex)
 {
-    printf("\n *** TO BE DONE");  return 0;
+    int i = 0;
+    while(true)
+    {
+        tab curr_tok =tokentab[i];
+        if(strcmp(curr_tok.text, fplex))
+            return curr_tok.token;
+
+        else if(curr_tok.token == nfound)
+                break;
+        i++;
+    }
+
+    i=0;
+
+    while(true)
+    {
+        tab curr_key =keywordtab[i];
+        if(strcmp(curr_key.text, fplex))
+            return curr_key.token;
+
+        else if(curr_key.token == nfound)
+                break;
+        i++;
+    }
+    return nfound;
+
 }
 
 /**********************************************************************/
@@ -100,6 +149,7 @@ char * tok2lex(toktyp ftok)
 {
     printf("\n *** TO BE DONE");  return 0;
 }
+
 
 /**********************************************************************/
 /* End of code                                                        */
