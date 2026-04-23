@@ -178,7 +178,7 @@ char * tok2lex(toktyp ftok)
         i++;
     }
 
-    return "TERROR";
+    return "undefined";
 }
 
 
