@@ -5,10 +5,11 @@
 /**********************************************************************/
 /* Include files                                                      */
 /**********************************************************************/
+#include "symtab.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
-
+#include <stdbool.h>
 /**********************************************************************/
 /* Other OBJECT's METHODS (IMPORTED)                                  */
 /**********************************************************************/
@@ -57,15 +58,18 @@ static void set_addr(int ftref, int    faddr)  { addr[ftref] = faddr; }
 /**********************************************************************/
 /*  Add a row to the symbol table                                     */
 /**********************************************************************/
-static void addrow(char *fname, toktyp frole, toktyp ftype,
+static bool addrow(char *fname, toktyp frole, toktyp ftype,
                    int fsize, int faddr)
 {
+    if(find_name(fname) == true) return false;
     set_name(numrows, fname);
     set_role(numrows, frole);
     set_type(numrows, ftype);
     set_size(numrows, fsize);
     set_addr(numrows, faddr);
     numrows++;
+    return true;
+
 }
 /**********************************************************************/
 /*  Initialise the symbol table                                       */
@@ -126,10 +130,12 @@ void p_symtab()
 /**********************************************************************/
 /*  Add a program name to the symbol table                            */
 /**********************************************************************/
+int find_name(char* fpname);
 void addp_name(char * fpname)
 {
     initst();
     startp = numrows;
+    //if name is already in table
     addrow(fpname, program, program, 0, 0);
     
 }
@@ -140,6 +146,7 @@ void addp_name(char * fpname)
 void addv_name(char * fpname)
 {
     addrow(fpname,var, undef, 0, 0);
+    
 }
 
 /**********************************************************************/
@@ -151,9 +158,9 @@ int find_name(char * fpname)
     for(int i = 0;i< numrows;i++)
     {
         if(strcmp(fpname, get_name(i)) == 0)
-            return 1;
+            return true;
     }
-    return 0;
+    return false;
 }
 
 /**********************************************************************/

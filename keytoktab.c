@@ -110,33 +110,35 @@ toktyp lex2tok(char * fplex)
     int i = 0;
     while(true)
     {
-        tab curr_tok =tokentab[i];
-        if(strcmp(curr_tok.text, fplex) == 0)
-            return curr_tok.token;
+        tab curr_tok = tokentab[i];
+        if(curr_tok.token == nfound)
+            break;
 
-        else if(curr_tok.token == nfound)
-                break;
+        if(!isalpha(curr_tok.text[0])) 
+        {
+            if(strcmp(curr_tok.text, fplex) == 0)
+                return curr_tok.token;
+        }
         i++;
     }
 
-    i=0;
-
+    i = 0;
     while(true)
     {
-        tab curr_key =keywordtab[i];
+        tab curr_key = keywordtab[i];
+        if(curr_key.token == nfound)
+            break;
+
         if(strcmp(curr_key.text, fplex) == 0)
             return curr_key.token;
-
-        else if(curr_key.token == nfound)
-                break;
         i++;
     }
+
     if(isdigit(fplex[0]))
         return number;
+        
     return id;
-
 }
-
 /**********************************************************************/
 /* key2tok - convert a keyword to a token                             */
 /**********************************************************************/

@@ -28,15 +28,6 @@ static int optab[][NENTS] = {
    {'*', real,    real,    real},
    {'*', integer, real,    real},
    {'*', real,    integer, real},
-   {'-', integer, integer, integer},
-   {'-', integer, real,    real},
-   {'-', real,    integer, real},
-   {'-', real,    real,    real},
-    // kan vara både real eller int
-   {'/', integer, integer, undef},
-   {'/', integer, real,    real},
-   {'/', real,    integer, real},
-   {'/', real,    real,    real},
    {'$', undef,   undef,   undef},
    };
 
