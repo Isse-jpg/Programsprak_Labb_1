@@ -36,6 +36,7 @@ static int  plex  = 0;               /* current index lexeme  buffer  */
 
 static void get_prog()
 {
+
     size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 1, stdin);
     buffer[bytes_read] = '\0';
 }
@@ -91,7 +92,14 @@ static char get_char()
 int get_token()
 {
     //för att kunna läsa in filen
-    if(buffer[0] == '\0') get_prog();
+    if(buffer[0] == '\0') 
+    {
+        get_prog();
+        printf("________________________________________________________\n");
+        printf("THE PROGRAM TEXT\n");
+        printf("________________________________________________________\n");
+        pbuffer();
+    }
 
     plex = 0;
     while(isspace(buffer[pbuf])){
