@@ -60,7 +60,7 @@ static void match(int t)
     if (lookahead == t) lookahead = get_token();
     else {
     is_parse_ok=0;
-    printf("\nSYNTAX: Symbol expected: %4s found: %4s\n",
+    printf("\nSYNTAX: Symbol expected %s found: %s\n",
               tok2lex(t), get_lexeme());
     }
     
@@ -309,7 +309,7 @@ static toktyp operand(){
         match(number);
     }
     else {
-        printf("\nSYNTAX: operand expected\n");
+        printf("\nSYNTAX: Operand expected\n");
         is_parse_ok = 0;
 
     }

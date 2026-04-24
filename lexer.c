@@ -112,7 +112,7 @@ int get_token()
         lexbuf[1] = '\0';
         return lex2tok(lexbuf); 
     }
-    const char* symbols = "$()*+,-./:;=";
+    const char* symbols = "$()*+,-./:;=!";
 
     while(buffer[pbuf] != '\0' && !isspace(buffer[pbuf])) 
     {
@@ -129,6 +129,12 @@ int get_token()
             }else{
                 get_char();
                 break;
+            }
+        }
+        if(plex > 0) {
+            // Om ordet vi bygger började på en siffra, men detta tecken är en bokstav...
+            if(isdigit(lexbuf[0]) && isalpha(curr_char)) {
+                break; // ...avbryt inläsningen av siffran!
             }
         }
         get_char();
