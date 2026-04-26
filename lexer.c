@@ -37,8 +37,9 @@ static int  plex  = 0;               /* current index lexeme  buffer  */
 static void get_prog()
 {
 
-    size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 1, stdin);
-    buffer[bytes_read] = '\0';
+    size_t bytes_read = fread(buffer, 1, sizeof(buffer) - 2, stdin);
+    buffer[bytes_read] = '$';
+    buffer[bytes_read+1] = '\0';
 }
 
 /**********************************************************************/
@@ -106,12 +107,6 @@ int get_token()
         pbuf++;
     }
 
-    if(buffer[pbuf] == '\0')
-    {
-        lexbuf[0] = '$';
-        lexbuf[1] = '\0';
-        return lex2tok(lexbuf); 
-    }
     const char* symbols = "$()*+,-./:;=!";
 
     while(buffer[pbuf] != '\0' && !isspace(buffer[pbuf])) 
