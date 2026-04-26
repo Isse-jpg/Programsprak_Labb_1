@@ -60,7 +60,7 @@ static void match(int t)
     if (lookahead == t) lookahead = get_token();
     else {
     is_parse_ok=0;
-    printf("\nSYNTAX: Symbol expected %s found: %s\n",
+    printf("SYNTAX:\tSymbol expected %s found: %s\n",
               tok2lex(t), get_lexeme());
     }
     
@@ -92,7 +92,15 @@ static void program_header()
 {
     in("program_header");
     match(program);  
-    addp_name(get_lexeme()); 
+    if(lookahead == id)
+    {
+        addp_name(get_lexeme());
+        
+    } 
+    else {
+        addp_name("???");
+
+    }
     match(id); 
     match('('); 
     match(input);
@@ -140,7 +148,7 @@ static void id_list()
         if(find_name(curr_name))
         {
             is_parse_ok = 0;
-            printf("\nSEMANTIC: ID already declared: %s", curr_name);
+            printf("SEMANTIC: ID already declared: %s\n", curr_name);
         }
         else
         {
@@ -172,7 +180,7 @@ static void type()
         match(curr_type);
     } 
     else {
-        printf("\nSYNTAX: Type name expected found %4s\n", get_lexeme());
+        printf("SYNTAX: Type name expected found %4s\n", get_lexeme());
         is_parse_ok = 0;
         
         setv_type(error);
@@ -218,7 +226,7 @@ static void assign_stat(){
         lhs_type = get_ntype(var_name);
         
         if (lhs_type == undef) {
-            printf("\nSEMANTIC: ID NOT declared: %s\n", var_name);
+            printf("SEMANTIC: ID NOT declared: %s\n", var_name);
             is_parse_ok = 0;
         }
     } 
@@ -235,7 +243,7 @@ static void assign_stat(){
     {
         
        
-        printf("\nSEMANTIC: Assign types: %s := %s\n", tok2lex(lhs_type), tok2lex(rhs_type));
+        printf("SEMANTIC: Assign types: %s := %s\n", tok2lex(lhs_type), tok2lex(rhs_type));
         is_parse_ok = 0;
         
     }
@@ -298,7 +306,7 @@ static toktyp operand(){
         
         
         if (type == undef) {
-            printf("\nSEMANTIC: ID NOT declared: %s \n", var_name);
+            printf("SEMANTIC: ID NOT declared: %s \n", var_name);
             is_parse_ok = 0;
         }
         
@@ -309,8 +317,9 @@ static toktyp operand(){
         match(number);
     }
     else {
-        printf("\nSYNTAX: Operand expected\n");
+        printf("SYNTAX: Operand expected\n");
         is_parse_ok = 0;
+        type = error;
 
     }
     
@@ -338,7 +347,7 @@ int parser()
         prog();               
         out("parser");
         if (lookahead != '$') {
-                printf("\nSYNTAX: Extra symbols after end of parse!\n");
+                printf("SYNTAX: Extra symbols after end of parse!\n");
                 while (lookahead != '$') {
                     printf("%s ", get_lexeme());
                     lookahead = get_token();
